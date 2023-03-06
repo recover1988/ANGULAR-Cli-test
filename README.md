@@ -4,7 +4,7 @@ En esta sección aprenderemos principalmente sobre el AngularCLI
 
 ## Para generar automáticamente componentes
 
-Con el comando `ng g c --help` podemos ver un par de ayudas como
+Con el comando `ng g c --help` podemos ver un par de ayudas como:
 
 ```
 Options:
@@ -38,9 +38,27 @@ Options:
 
 ```
 
+Para generar un nuevo componente usamos en el CLI la siguiente expresion:
+
+```
+ng g c pages/about/about --flat --skip-tests
+```
+
+Esta expresion crea los siguientes archivos en la ruta indicada:
+
+```
+CREATE src/app/pages/about/about.component.html (20 bytes)
+CREATE src/app/pages/about/about.component.ts (198 bytes)
+CREATE src/app/pages/about/about.component.css (0 bytes)
+UPDATE src/app/app.module.ts (478 bytes)
+```
+
 ## Para ubicar automáticamente los componetes/servicios/pipes/modulos y demás en las carpetas deseadas
 
 ## Aprenderemos a mover componentes y servicios mal generados a sus respectivos lugares
+
+Simplemente tenemos que mover los componentes que queremos a sus nuevas carpetas y actualizar los path de los modulos para importarlos correctamente.
+Si queremos borrar alguno de los archivos que se generaron, por algun motivos debemos fijarnos que su importacion o exportacion en el `component.ts` tambien sea actualizado.
 
 ## Además de un par de tips útiles que les pueden servir
 
