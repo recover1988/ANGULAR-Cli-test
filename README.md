@@ -2,7 +2,45 @@
 
 En esta sección aprenderemos principalmente sobre el AngularCLI
 
-## Para generar automáticamente componentes
+## Para generar automáticamente
+
+Con el comando `ng g --help` podemos ver todo lo que angular pude generar.
+
+```
+Commands:
+  ng g <schematic>              Run the provided schematic.  [default]
+  ng g app-shell                Generates an application shell for running a server-side version of an app.
+  ng g application [name]       Generates a new basic application definition in the "projects" subfolder of the workspace.  [aliases: app]
+  ng g class [name]             Creates a new, generic class definition in the given project.  [aliases: cl]
+  ng g component [name]         Creates a new, generic component definition in the given project.  [aliases: c]
+  ng g config [type]            Generates a configuration file in the given project.
+  ng g directive [name]         Creates a new, generic directive definition in the given project.  [aliases: d]
+  ng g enum [name]              Generates a new, generic enum definition in the given project.  [aliases: e]
+  ng g environments             Generates and configures environment files for a project.
+  ng g guard [name]             Generates a new, generic route guard definition in the given project.  [aliases: g]
+  ng g interceptor [name]       Creates a new, generic interceptor definition in the given project.
+  ng g interface [name] [type]  Creates a new, generic interface definition in the given project.  [aliases: i]
+  ng g library [name]           Creates a new, generic library project in the current workspace.  [aliases: lib]
+  ng g module [name]            Creates a new, generic NgModule definition in the given project.  [aliases: m]
+  ng g pipe [name]              Creates a new, generic pipe definition in the given project.  [aliases: p]
+  ng g resolver [name]          Generates a new, generic resolver definition in the given project.  [aliases: r]
+  ng g service [name]           Creates a new, generic service definition in the given project.  [aliases: s]
+  ng g service-worker           Pass this schematic to the "run" command to create a service worker
+  ng g web-worker [name]        Creates a new, generic web worker definition in the given project.
+
+Arguments:
+  schematic  The [collection:schematic] to run.  [string]
+
+Options:
+  --help         Shows a help message for this command in the console.  [boolean]
+  --interactive  Enable interactive input prompts.  [boolean] [default: true]
+  --dry-run      Run through and reports activity without writing out results.  [boolean] [default: false]
+  --defaults     Disable interactive input prompts for options with a default.  [boolean] [default: false]
+  --force        Force overwriting of existing files.  [boolean] [default: false]
+
+```
+
+## COMPONENT
 
 Con el comando `ng g c --help` podemos ver un par de ayudas como:
 
@@ -53,6 +91,71 @@ CREATE src/app/pages/about/about.component.css (0 bytes)
 UPDATE src/app/app.module.ts (478 bytes)
 ```
 
+## SERVICE
+
+Escribir `ng g s --help` y obtendremos las siguientes opcionces:
+
+```
+Options:
+  --help         Shows a help message for this command in the console.  [boolean]
+  --interactive  Enable interactive input prompts.  [boolean] [default: true]
+  --dry-run      Run through and reports activity without writing out results.  [boolean] [default: false]
+  --defaults     Disable interactive input prompts for options with a default.  [boolean] [default: false]
+  --force        Force overwriting of existing files.  [boolean] [default: false]
+  --flat         When true (the default), creates files at the top level of the project.  [boolean] [default: true]
+  --project      The name of the project.  [string]
+  --skip-tests   Do not create "spec.ts" test files for the new service.  [boolean] [default: false]
+
+```
+
+Para generear un nuevo servicio podemos escribir:
+
+```
+ng g s auth
+```
+
+Esto genera los siguientes archivos:
+
+```
+CREATE src/app/auth.service.spec.ts (347 bytes)
+CREATE src/app/auth.service.ts (133 bytes)
+```
+
+El archivo de `.spec` son archivos de testign y se pueden borrar porque no afecta a la aplicacion.
+Los `services` gracias a su decorador son de tipo global y no hay que importarlos ya que estan ligados al `root`.
+
+```
+@Injectable({
+  providedIn: 'root'
+})
+```
+
+Los archivos de `service` se pueden ubicar en cualquier otra carpeta, pero los path de los componenetes en los que se usa tienen que actualizarse.
+
+#### Usar Service
+
+Para hacer uso de los servicios solo hay que inyectarlos en el componente:
+
+```
+  constructor(
+    private authService: AuthService,
+  ) { }
+```
+
+## GUARD
+
+Para generar un `guard` debemos escribir el siguiente comando:
+
+```
+ng g guard guard/auth --skip-tests
+
+genera:
+? Which type of guard would you like to create? CanActivate, CanLoad
+CREATE src/app/guard/auth.guard.ts (651 bytes)
+```
+
+Los `guard` viene con diferentes opciones que se pueden seleccionar con la `[barra espaciadora]`.
+
 ## Para ubicar automáticamente los componetes/servicios/pipes/modulos y demás en las carpetas deseadas
 
 ## Aprenderemos a mover componentes y servicios mal generados a sus respectivos lugares
@@ -62,9 +165,26 @@ Si queremos borrar alguno de los archivos que se generaron, por algun motivos de
 
 ## Además de un par de tips útiles que les pueden servir
 
-El objetivo principal, es ayudarles a que dominemos este generador automático, porque próximamente lo usaremos mucho para crear bastantes componentes, servicios y necesito que sepamos manejarlo bien y con confianza.
+Usar la bandera `--dry-run` nos permite simular la creacion de las carpetas para que podamos comprobar si es lo que necesitamos.
 
-Al finalizar la sección, hay una tarea de reforzamiento.
+```
+ng g s services/user --dry-run
+
+genera:
+CREATE src/app/services/user.service.spec.ts (347 bytes)
+CREATE src/app/services/user.service.ts (133 bytes)
+
+NOTE: The "--dry-run" option means no changes were made.
+
+ng g s services/user -d --skip-tests
+
+genera:
+CREATE src/app/services/user.service.ts (133 bytes)
+
+NOTE: The "--dry-run" option means no changes were made.
+```
+
+Ahora podemos quitar el `-d` y se generan los archivos que vimos.
 
 # Angular
 
